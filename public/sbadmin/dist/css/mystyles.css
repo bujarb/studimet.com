@@ -1,0 +1,78 @@
+.abc{
+  border:1px solid red;
+}
+
+#image-box{
+  margin-top:20px;
+}
+
+#header-box p{
+  display: inline;
+  font-size: 17px;
+}
+
+#header-sign{
+  font-size: 20px;
+  color: blue;
+  margin-right: 5px;
+}
+
+/* HOVER STYLES */
+div#pop-up {
+  display: none;
+  position: absolute;
+  padding: 10px;
+  background: white;;
+  color: #000000;
+  border: 1px solid #1a1a1a;
+  font-size: 90%;
+  z-index: 99;
+  height: 35px;
+}
+#info-box{
+  padding: 10px;
+  margin: 10px;
+}
+
+#deletemodal{
+  margin-top: 100px;
+  width: 250px;
+}
+
+.btn-delete{
+  background-color: #F03434;
+}
+
+#deletemodal-body{
+  background-color: #F03434;
+  border-radius: 0px;
+  color: white;
+}
+
+
+#deletemodal-footer{
+  background-color: white;
+}
+#info-box p{
+  font-size: 18px;
+  font-weight:bold;
+  font-family: arial;
+  color: #5f6063;
+}
+
+#titleandphoto img{
+  margin-top: 10px;
+}
+
+.space{
+  height: 50px;
+}
+
+#social-network-box p{
+  font-size: 20px;
+}
+
+#icons a{
+  font-size: 20px;
+  padding-left: 10px;
+}

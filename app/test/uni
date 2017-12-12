@@ -1,0 +1,102 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
+use App\User;
+use DB;
+use App\University;
+use App\Country;
+use App\City;
+use Auth;
+use Image;
+use App\Course;
+class UniversityController extends Controller
+{
+    public function __costruct(){
+      $this->middleware('auth:web');
+    }
+    public function getUniDashboard(){
+
+    }
+
+    public function getSingleUniversityForModerator($name){
+        if(Auth::user()->hasRole('moderator')){
+            return view('university.single');
+        }
+    }
+
+    public function deleteUniversity($id){
+        $institution = University::find($id);
+        $institution->delete();
+        return redirect()->route('user-account');
+    }
+
+    public function getEditUniversityPage($name){
+        if (Auth::user()->hasRole('moderator')){
+            return view('university.edit');
+        }
+    }
+
+    public function getUniversityCreate(){
+      $countries = Country::all();
+      $cities = City::all();
+      $data = [
+        'cities'=>$cities,
+        'countries'=>$countries
+      ];
+      return view('institution.create',$data);
+    }
+
+
+    public function insertUniversityData(Request $request,$id){
+      $institution = University::where('id',$id)->first();
+      $institution->establishment_year = $request->input('year');
+      $institution->type = $request->input('type');
+      $institution->address = $request->input('address');
+      $institution->fax = $request->input('fax');
+      // save image
+      if ($request->has('logo')) {
+          $image = $request->file('logo');
+          $input['imagename'] = time() . '.' . $image->getClientOriginalExtension();
+
+          $destination_path = public_path('/images/uni_logo');
+          $img = Image::make($image->getRealPath());
+          $image->move($destination_path, $input['imagename']);
+          $path = 'images/uni_logo/' . $input['imagename'];
+          $institution->logo_path = $path;
+      }
+      $institution->completed = 1;
+      $institution->save();
+
+      return redirect()->route('course-create');
+
+    }
+
+
+    public function viewUni($name){
+        $institution = DB::table('universities')
+                          ->select('universities.*','countries.name as countryname','cities.name as cityname')
+                          ->join('countries','countries.id','=','universities.country')
+                          ->join('cities','cities.id','=','universities.city')
+                          ->where('universities.name','=',$name)
+                          ->first();
+        return view('university.view',['university'=>$institution]);
+    }
+
+    public function getCoursesForUniversity(){
+      if (Input::has('university')) {
+        $name = Input::get('university');
+        $courses = University::where('name','=',$name)->get();
+        dd($courses);
+
+        return view('users.index',['courses'=>$courses]);
+      }
+    }
+
+    public function completeRegistration(){
+
+      return view('university.completeregistration',['university'=>$institution]);
+    }
+}

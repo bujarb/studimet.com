@@ -1,0 +1,232 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Course;
+use App\Discipline;
+use App\University;
+use DB;
+use App\Comparison;
+use Auth;
+use Flashy;
+use App\Degree;
+use App\WishList;
+
+class CourseController extends Controller
+{
+    /*
+     * Here are the CRUD methods for courses by the moderator*/
+
+    public function getIndex(){
+        return view('courses.index');
+    }
+
+    public function getCoursesByDiscipline($name){
+      $courses = DB::table('courses')
+                      ->select('courses.*','disciplines.name as disciplines_name','cities.name as cityname','universities.name as university_name','universities.background_image_path as image','degrees.display_name as degree_name','countries.name as countryname')
+                      ->join('disciplines','disciplines.id','=','courses.discipline_id')
+                      ->join('universities','universities.id','=','courses.uni_id')
+                      ->join('degrees','degrees.id','=','courses.degree_id')
+                      ->join('countries','countries.id','=','universities.country')
+                      ->join('cities','cities.id','=','universities.city')
+                      ->where('disciplines.name','=',$name)
+                      ->paginate(5);
+
+
+
+        return view('pages.bydicscipline',['courses'=>$courses]);
+    }
+
+    public function getCoursesByCountry($name){
+      $courses = DB::table('courses')
+                      ->select('courses.*','disciplines.name as disciplines_name','cities.name as cityname','universities.name as university_name','universities.background_image_path as image','degrees.display_name as degree_name','countries.name as countryname')
+                      ->join('disciplines','disciplines.id','=','courses.discipline_id')
+                      ->join('universities','universities.id','=','courses.uni_id')
+                      ->join('degrees','degrees.id','=','courses.degree_id')
+                      ->join('countries','countries.id','=','universities.country')
+                      ->join('cities','cities.id','=','universities.city')
+                      ->where('countries.name','=',$name)
+                      ->paginate(5);
+
+
+
+        return view('pages.bycountry',['courses'=>$courses]);
+    }
+
+    public function insertCourse(Request $request){
+
+
+        $institution = Auth::user();
+        //dd($request);
+
+        $course = new Course();
+        $course->name = $request->input('name');
+        $course->duration = $request->input('duration');
+        $course->language = $request->input('language');
+        $course->fee = $request->input('fee');
+        $course->deadline = $request->input('deadline');
+        $course->program_website_link = $request->input('websitelink');
+        $course->admission_inquiry_link = $request->input('admissionlink');
+        $course->overview = $request->input('overview');
+        $course->programme_outline = $request->input('outline');
+        $course->key_facts = $request->input('facts');
+        $course->addmission_requirments = $request->input('admission');
+        $course->students_service = $request->input('students');
+        $course->fee_funding = $request->input('funding');
+        $course->uni_id = $institution->id;
+        $course->discipline_id = $request->input('discipline');
+        $course->degree_id = $request->input('degree');
+
+        $course->save();
+
+        return redirect()->route('university-dashboard',$institution->name);
+    }
+
+    public function deleteCourse($id){
+        if(Auth::user()->hasRole('moderator')){
+            $course = Course::find($id);
+            $course->delete();
+            return redirect()->route('home');
+        }
+    }
+
+    public function viewCourse($name){
+      $course = DB::table('courses')
+                    ->select('courses.*','universities.name as uniname','degrees.display_name as degreename','disciplines.name as disciplinename')
+                    ->join('universities','universities.id','=','courses.uni_id')
+                    ->join('disciplines','disciplines.id','=','courses.discipline_id')
+                    ->join('degrees','degrees.id','=','courses.degree_id')
+                    ->where('courses.name','=',$name)->first();
+
+      //dd($course);
+      return view('courses.view',['course'=>$course]);
+    }
+
+    public function addToComparison($id){
+      $user = Auth::user();
+      $course = Course::where('id','=',$id)->first();
+
+      $userCourses = Comparison::where('course_id','=',$course->id)->where('user_id','=',$user->id)->first();
+      $allUserComparisons = Comparison::where('user_id','=',$user->id)->count();
+      //dd($allUserComparisons);
+
+      if ($userCourses) {
+        Flashy::warning('Course exits in comparisson');
+        return redirect()->back();
+      }else {
+        if ($allUserComparisons == 3) {
+          Flashy::error('You cannot compare more than 3 courses');
+          return redirect()->back();
+        }else{
+          $userComparission = new Comparison();
+          $userComparission->course_id = $course->id;
+          $userComparission->user_id = Auth::user()->id;
+          $userComparission->save();
+          Flashy::success('Course was added to comparison');
+          return redirect()->back();
+        }
+      }
+    }
+
+    public function removeFromComparison($id){
+      $user_id = Auth::user()->id;
+      $course = Comparison::where('course_id','=',$id)->where('user_id','=',$user_id)->first();
+      $course->delete();
+
+      Flashy::success('Course was succefuly deleted from comaprison');
+      return redirect()->back();
+    }
+
+    public function getCourseCreate(){
+      $disciplines = Discipline::all();
+      $degrees = Degree::all();
+
+      $data = [
+        'disciplines'=>$disciplines,
+        'degrees'=>$degrees
+      ];
+
+      return view('courses.create',$data);
+    }
+
+    public function getComparissionView(){
+      $courses = DB::table('courses')
+                    ->select('courses.*','disciplines.name as disciplines_name','cities.name as cityname','universities.name as university_name','universities.background_image_path as image','degrees.display_name as degree_name','countries.name as countryname','comparisons.course_id as comcourseid')
+                    ->join('disciplines','disciplines.id','=','courses.discipline_id')
+                    ->join('universities','universities.id','=','courses.uni_id')
+                    ->join('degrees','degrees.id','=','courses.degree_id')
+                    ->join('countries','countries.id','=','universities.country')
+                    ->join('cities','cities.id','=','universities.city')
+                    ->join('comparisons','comparisons.course_id','=','courses.id')
+                    ->where('comparisons.user_id','=',Auth::user()->id)
+                    ->get();
+
+      //dd($comparisoncourses);
+      return view('pages.comparisons',['courses'=>$courses]);
+    }
+
+    public function getCourseEdit($name){
+      $course = Course::where('name',$name)->first();
+      $universities = University::where('user_id','=',Auth::user()->id)->get();
+      $disciplines = Discipline::all();
+      $degrees = Degree::all();
+
+      $data = [
+        'course'=>$course,
+        'universities'=>$universities,
+        'disciplines'=>$disciplines,
+        'degrees'=>$degrees
+      ];
+
+      return view('courses.edit',$data);
+    }
+
+    public function addToWishList($name){
+      $course = Course::where('name',$name)->first();
+      $user_id = Auth::guard('user')->user()->id;
+
+      $userWishList = WishList::where('user_id',$user_id)->where('course_id',$course->id)->first();
+
+      if ($userWishList) {
+        Flashy::error('Course exits in wish list');
+        return redirect()->back();
+      }else{
+        $wishlistitem = new WishList();
+        $wishlistitem->course_id = $course->id;
+        $wishlistitem->user_id = $user_id;
+        $wishlistitem->save();
+
+        Flashy::success('Course was added to wish list');
+        return redirect()->back();
+      }
+    }
+
+    public function removeFromWishList($course_id){
+      $user_id = Auth::guard('user')->user()->id;
+
+      $wishListItem = WishList::where('course_id',$course_id)->where('user_id',$user_id)->first();
+      $wishListItem->delete();
+      Flashy::success('Course was successfuly removed from wish list');
+      return redirect()->back();
+    }
+
+    public function getUserWithList(){
+      if (Auth::guard('user')->check()) {
+        $user_id = Auth::guard('user')->user()->id;
+        $wishlist = DB::table('courses')
+                      ->select('courses.*','disciplines.name as disciplines_name','cities.name as cityname','universities.name as university_name','universities.background_image_path as image','degrees.display_name as degree_name','countries.name as countryname','wishlist.course_id as wishcourseid')
+                      ->join('disciplines','disciplines.id','=','courses.discipline_id')
+                      ->join('universities','universities.id','=','courses.uni_id')
+                      ->join('degrees','degrees.id','=','courses.degree_id')
+                      ->join('countries','countries.id','=','universities.country')
+                      ->join('cities','cities.id','=','universities.city')
+                      ->join('wishlist','wishlist.course_id','=','courses.id')
+                      ->where('wishlist.user_id','=',Auth::user()->id)
+                      ->get();
+
+        return view('pages.wishlist',['wishlist'=>$wishlist]);
+      }
+    }
+
+}

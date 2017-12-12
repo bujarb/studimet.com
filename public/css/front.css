@@ -1,0 +1,107 @@
+#myNav{
+  background-color: #f05f40!important;
+  color: white;
+  height: 50px;
+}
+
+.nav-link{
+  color: white;
+}
+
+.nav-link:hover{
+  color: #dee2e8;
+}
+
+.nav-item{
+  font-size: 18px;
+}
+
+.navbar-brand{
+  color: white;
+}
+
+.navbar-brand:hover{
+  color: #dee2e8;
+}
+
+#mysearchcard{
+  width: 100%;
+}
+
+.front-search-control{
+  border-color: #f05f40;
+  border-radius: 0px;
+  color: #f05f40;
+  background-color: transparent;
+}
+
+.front-search-control #first-option{
+  background-color: #f05f40;
+  color: white;
+}
+
+.front-search-control option{
+  background-color: white;
+  color: #CF000F;
+  property:disabled;
+}
+
+.front-search-control:focus{
+  border-radius: 0px;
+  border-color: #f05f40;
+  outline: none !important;
+  box-shadow: none;
+  background-color: #f05f40;
+  color: white;
+}
+
+.front-search-control::-webkit-input-placeholder {
+  color: #f05f40;
+}
+
+.front-search-control:focus::-webkit-input-placeholder {
+    color: white;
+    font-weight: bold;
+}
+
+@media (min-width: 576px) {
+  .front-search-control{
+    margin-top: 5px;
+  }
+}
+
+#card-header{
+  background-color: #f05f40!important;
+  border-radius: 0px;
+}
+
+#card-footer{
+  background-color: #f05f40!important;
+}
+
+#searchCard{
+  margin-top: 100px;
+  border:2px solid #f05f40;
+  border-radius: 0px;
+  background-color: transparent;
+}
+
+#type-card{
+  border-radius: 0px;
+}
+
+#type-card a{
+  color:white;
+}
+#type-card a:hover{
+  color:white;
+  text-decoration: none;
+}
+
+.frontsection{
+  position: relative;
+  width: 100%;
+  height: 200px;
+  margin-bottom: 50px;
+  text-align: center;
+}
