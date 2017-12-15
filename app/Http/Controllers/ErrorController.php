@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 class ErrorController extends Controller
 {
-    public function BadPage(){
-      return view('errors.badpage');
+    public function 403(){
+      return view('errors.403');
     }
 }

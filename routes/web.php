@@ -29,7 +29,7 @@ Route::prefix('admin')->middleware('admin')->group(function () {
 });
 
 // The bad page error route
-Route::get('error','ErrorController@BadPage')->name('bad.page');
+Route::get('error','ErrorController@403')->name('bad.page');
 
 Route::post('comparison/add/{course}',[
   'uses'=>'CourseController@addToComparison',
