@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Institution;
-use App\City;
 use App\Course;
-use Image;
+use App\City;
 use Flashy;
+use Image;
+
+
 class InstitutionController extends Controller
 {
   /**

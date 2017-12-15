@@ -81,7 +81,8 @@
 
 #searchCard{
   margin-top: 100px;
-  border:2px solid #f05f40;
+  /*border:2px solid #f05f40;*/
+  border:2px solid #fff;
   border-radius: 0px;
   background-color: transparent;
 }

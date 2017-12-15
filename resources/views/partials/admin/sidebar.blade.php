@@ -16,7 +16,7 @@
                 <a href="{{route('home',Session::get('country'))}}"><i class="fa fa-home fa-fw"></i> Home</a>
             </li>
             <li>
-                <a href="{{route('admin-index')}}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                <a href="{{route('admin.index')}}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
             </li>
             <li>
                 <a href="index.html"><i class="fa fa-university fa-fw"></i> Institutions<span class="fa arrow"></span></a>
@@ -49,7 +49,7 @@
                         <a href="{{route('city.create')}}">Create a City</a>
                     </li>
                     <li>
-                        <a href="{{route('admin-city-index')}}">View Cities</a>
+                        <a href="{{route('city.index')}}">View Cities</a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->

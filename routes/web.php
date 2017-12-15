@@ -1,11 +1,9 @@
 <?php
 
-Route::prefix('admin')->group(function () {
+Route::prefix('admin')->middleware('admin')->group(function () {
 
-    Route::get('/',[
-        'uses'=>'AdminController@getAdminDashboard',
-        'as'=>'admin-index'
-    ]);
+    // Admin dashboard route
+    Route::get('/','AdminController@getAdminDashboard')->name('admin.index');
 
     // InstitutionController Routes
     Route::resource('institution', 'InstitutionController');
@@ -30,92 +28,8 @@ Route::prefix('admin')->group(function () {
     Route::post('degree/delete/{id}', 'DisciplineDegreeController@destroyDegree')->name('degree.destroy');
 });
 
-Route::get('admin/univerities/edit/{name}',[
-  'uses'=>'AdminController@getAdminEditUniversity',
-
-  'as'=>'admin-edit-university'
-]);
-
-Route::get('admin/courses',[
-    'uses'=>'AdminController@getAdminCoursesIndex',
-
-    'as'=>'admin-course-index'
-]);
-
-Route::get('admin/my/courses',[
-    'uses'=>'AdminController@getMyAdminCourses',
-
-    'as'=>'admin-my-course-index'
-]);
-
-Route::get('admin/courses/create',[
-    'uses'=>'AdminController@getAdminCourseCreate',
-
-    'as'=>'admin-course-create'
-]);
-
-Route::get('admin/courses/view/{name}',[
-    'uses'=>'AdminController@adminViewCourse',
-
-    'as'=>'admin-view-course'
-]);
-
-Route::get('admin/courses/edit/{name}',[
-    'uses'=>'AdminController@getAdminCourseEdit',
-
-    'as'=>'admin-edit-course'
-]);
-
-Route::post('admin/courses/update/{course}',[
-    'uses'=>'AdminController@adminUpdateCourse',
-
-    'as'=>'admin-course-update'
-]);
-
-// Routes for cities
-Route::get('admin/cities',[
-  'uses'=>'AdminController@getAdminCitiesIndex',
-
-  'as'=>'admin-city-index'
-]);
-
-Route::post('admin/cities/insert',[
-  'uses'=>'AdminController@adminInsertCity',
-
-  'as'=>'admin-city-insert'
-]);
-
-Route::post('admin/cities/update/{id}',[
-  'uses'=>'AdminController@adminUpdateCity',
-
-  'as'=>'admin-city-update'
-]);
-
-Route::post('admin/cities/{name}/delete',[
-  'uses'=>'AdminController@adminCityDelete',
-  'as'=>'admin-city-delete'
-]);
-
-Route::get('admin/cities/create',[
-  'uses'=>'AdminController@getAdminCitiesCreate',
-
-  'as'=>'admin-city-create'
-]);
-
-Route::get('usearch',[
-  'uses' => 'AdminController@searchUser',
-  'as' => 'usearch'
-]);
-
-// Routes for permissions and roles
-Route::get('admin/permissions&roles',[
-  'uses'=>'AdminController@getAdminPermissionRoleIndex',
-
-  'as'=>'admin-permissionrole-index'
-]);
-
-//End of admin routes
-
+// The bad page error route
+Route::get('error','ErrorController@BadPage')->name('bad.page');
 
 Route::post('comparison/add/{course}',[
   'uses'=>'CourseController@addToComparison',
@@ -152,31 +66,16 @@ Route::get('/',[
     'as'=>'home'
 ]);
 
-Route::get('country/{country}/',[
-    'uses'=>'PagesController@getCountryIndex',
-    'as'=>'country-home'
-]);
-
 Route::get('/providers/account',[
     'uses'=>'PagesController@getProvidersLandingPage',
     'as'=>'providers-home'
 ]);
 
-Route::get('inserttosession/{country}',[
-    'uses'=>'PagesController@insertIntoSession',
-    'as'=>'inserttosession'
-]);
 
 // No middleware routes
 Route::get('search',[
     'uses' => 'SearchController@autoCompleteDiscipline',
     'as' => 'search-discipline'
-]);
-
-
-Route::get('university/{name}',[
-    'uses'=>'UniversityController@viewUni',
-    'as'=>'view-university'
 ]);
 
 Route::get('course/{name}',[

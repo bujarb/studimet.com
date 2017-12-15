@@ -16,11 +16,6 @@
           <div class="col-md-4">
             <h3 class="panel-title">View all cities</h3>
           </div>
-          <div class="col-md-4 pull-right">
-            <select class="form-control" name="conutry" id="country">
-              <option value="1">Kosovo</option>
-            </select>
-          </div>
         </div>
       </div>
       <div class="panel-body">
@@ -29,7 +24,6 @@
             <thead>
                 <tr>
                     <th>Name</th>
-                    <th>Country</th>
                     <th>Edit</th>
                     <th>Delete</th>
                 </tr>
@@ -38,10 +32,9 @@
                 @foreach ($cities as $city)
                   <tr>
                       <td>{{$city->name}}</td>
-                      <td>{{$city->countryname}}</td>
                       <td><a href="{{url()->current()}}?id={{$city->id}}" id="btnEdit"class="btn btn-primary btn-sm btn-block">Edit</a></td>
                       <td>
-                        <form action="{{route('admin-city-delete',$city->name)}}" method="post">
+                        <form action="{{route('city.destroy',$city->id)}}" method="post">
                           {{csrf_field()}}
                           <input type="submit" value="Delete" class="btn btn-danger btn-sm btn-block">
                         </form>
@@ -63,23 +56,15 @@
           <h3 class="panel-title">Update the city</h3>
         </div>
         <div class="panel-body">
-          <form class="" action="{{route('admin-city-update',$city->id)}}" method="post">
-            {{csrf_field()}}
+          <form action="{{route('city.update',$city->id)}}" method="post">
+            {{-- {{csrf_field()}} --}}
             <div class="form-group">
               <label for="">Name</label>
               <input type="text" name="city" id="city" value="{{$city->name}}" class="form-control">
             </div>
-            <div class="form-group">
-              <label for="">Country</label>
-              <select class="form-control" name="country" id="country">
-                @foreach ($countries as $country)
-                  <option value="{{$country->id}}" selected="{{$city->country}}">{{$country->name}}</option>
-                @endforeach
-              </select>
-            </div>
             <div class="row">
               <div class="col-md-6">
-                <a href="{{url('admin/cities')}}" class="btn btn-danger btn-sm btn-block">Cancel</a>
+                <a href="#" class="btn btn-danger btn-sm btn-block">Cancel</a>
               </div>
               <div class="col-md-6">
                 <input type="submit" value="Update" class="btn btn-primary btn-sm btn-block">

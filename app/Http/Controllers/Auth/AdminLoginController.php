@@ -27,7 +27,7 @@ class AdminLoginController extends Controller
       ];
 
       if (Auth::guard('admin')->attempt($credentials)) {
-        return redirect()->route('admin-index');
+        return redirect()->route('admin.index');
       }else{
         return redirect()->back();
       }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
 use App\City;
 
@@ -14,7 +15,15 @@ class CityController extends Controller
      */
     public function index()
     {
-        //
+        $data = Input::all();
+        $cities = City::all();
+
+        if(Input::has('id')){
+          $city = City::find(Input::get('id'));
+          return view('admin.cities.index',['cities'=>$cities,'city'=>$city]);
+        }else{
+          return view('admin.cities.index',['cities'=>$cities]);
+        }
     }
 
     /**
@@ -73,7 +82,13 @@ class CityController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //dd($request);
+        $city = City::findOrFail($id);
+        $city->name = $request->input('city');
+        $city->update();
+
+        Flashy::info('City was succesfully updated!');
+        return redirect()->back();
     }
 
     /**
@@ -84,6 +99,10 @@ class CityController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $city = City::findOrFail($id);
+        $city->delete();
+
+        Flashy::error('City was succesfully deleted!');
+        return redirect()->back();
     }
 }
