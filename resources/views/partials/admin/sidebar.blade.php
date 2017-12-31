@@ -13,13 +13,13 @@
                 <!-- /input-group -->
             </li>
             <li>
-                <a href="{{route('home',Session::get('country'))}}"><i class="fa fa-home fa-fw"></i> Home</a>
+                <a href="{{route('home')}}"><i class="fa fa-home fa-fw"></i> Home</a>
             </li>
             <li>
                 <a href="{{route('admin.index')}}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
             </li>
             <li>
-                <a href="index.html"><i class="fa fa-university fa-fw"></i> Institutions<span class="fa arrow"></span></a>
+                <a href=""><i class="fa fa-university fa-fw"></i> Institutions<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="{{route('institution.create')}}">Create a Institution</a>

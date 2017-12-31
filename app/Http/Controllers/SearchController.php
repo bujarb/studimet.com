@@ -44,6 +44,8 @@ class SearchController extends Controller
                                         'courses'=>$courses
                                       ];
 
+                                      //dd($courses);
+
 
          return view('pages.results',$data);
      }

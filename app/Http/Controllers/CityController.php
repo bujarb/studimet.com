@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Input;
+use MercurySeries\Flashy\Flashy;
 use Illuminate\Http\Request;
 use App\City;
 
@@ -48,7 +49,7 @@ class CityController extends Controller
         $city->name = $request->name;
         $city->save();
 
-        return redirect()->back();
+        return redirect()->route('city.index');
     }
 
     /**
@@ -70,7 +71,8 @@ class CityController extends Controller
      */
     public function edit($id)
     {
-        //
+        $city = City::findOrFail($id);
+        return view('admin.cities.edit',['city'=>$city]);
     }
 
     /**
@@ -88,7 +90,7 @@ class CityController extends Controller
         $city->update();
 
         Flashy::info('City was succesfully updated!');
-        return redirect()->back();
+        return redirect()->route('city.index');
     }
 
     /**

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 class ErrorController extends Controller
 {
-    public function 403(){
+    public function noaccess(){
       return view('errors.403');
     }
 }

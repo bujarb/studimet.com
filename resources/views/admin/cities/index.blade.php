@@ -1,13 +1,11 @@
 @extends('layouts.adminmain')
 
 @section('content')
-  @section('content')
-    <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header"><i class="fa fa-flag" aria-hidden="true"></i> All Cities</h1>
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
+<div class="row">
+  <div class="col-lg-12">
+      <h1 class="page-header"><i class="fa fa-flag" aria-hidden="true"></i> All Cities</h1>
+  </div>
+</div>
 <div class="row">
   <div class="col-md-6 col-md-offset-3" id="colmdof2">
     <div class="panel panel-default">
@@ -32,11 +30,33 @@
                 @foreach ($cities as $city)
                   <tr>
                       <td>{{$city->name}}</td>
-                      <td><a href="{{url()->current()}}?id={{$city->id}}" id="btnEdit"class="btn btn-primary btn-sm btn-block">Edit</a></td>
+                      <td><a href="{{route('city.edit',$city->id)}}" class="btn btn-primary btn-sm btn-block">Edit</a></td>
                       <td>
-                        <form action="{{route('city.destroy',$city->id)}}" method="post">
+                          <a href="#" data-toggle="modal" class="btn btn-danger btn-sm btn-block" data-target="#myModal">Delete</a>
+                          
+                          <form action="{{route('city.destroy',$city->id)}}" method="post">
                           {{csrf_field()}}
-                          <input type="submit" value="Delete" class="btn btn-danger btn-sm btn-block">
+                          <!-- Modal -->
+                          <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document" id="deletemodal">
+                              <div class="modal-content" id="deletemodal-body">
+                                <div class="modal-body">
+                                  <h3 class="text-center">Confirm</h3>
+                                </div>
+                                <div class="modal-footer" id="deletemodal-footer">
+                                  <div class="row">
+                                    <div class="col-md-6">
+                                      <input type="submit" class="btn btn-delete btn-block" value="Delete">
+                                    </div>
+                                    <div class="col-md-6">
+                                      <button data-dismiss="modal" class="btn btn-default btn-block">Close</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          {{ method_field('DELETE') }}
                         </form>
                       </td>
                   </tr>
@@ -49,35 +69,6 @@
       </div>
     </div>
   </div>
-  @isset($city)
-    <div class="col-md-6">
-      <div class="panel panel-default" style="display:none;" id="mypanel">
-        <div class="panel-heading">
-          <h3 class="panel-title">Update the city</h3>
-        </div>
-        <div class="panel-body">
-          <form action="{{route('city.update',$city->id)}}" method="post">
-            {{-- {{csrf_field()}} --}}
-            <div class="form-group">
-              <label for="">Name</label>
-              <input type="text" name="city" id="city" value="{{$city->name}}" class="form-control">
-            </div>
-            <div class="row">
-              <div class="col-md-6">
-                <a href="#" class="btn btn-danger btn-sm btn-block">Cancel</a>
-              </div>
-              <div class="col-md-6">
-                <input type="submit" value="Update" class="btn btn-primary btn-sm btn-block">
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="panel-footer">
-
-        </div>
-      </div>
-    </div>
-  @endisset
 </div>
 @endsection
 

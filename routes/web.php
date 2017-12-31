@@ -29,17 +29,11 @@ Route::prefix('admin')->middleware('admin')->group(function () {
 });
 
 // The bad page error route
-Route::get('error','ErrorController@403')->name('bad.page');
+Route::get('error','ErrorController@noaccess')->name('bad.page');
 
-Route::post('comparison/add/{course}',[
-  'uses'=>'CourseController@addToComparison',
-  'as'=>'add-to-comparison'
-]);
-
-Route::post('comparison/remove/{course}',[
-  'uses'=>'CourseController@removeFromComparison',
-  'as'=>'remove-from-comparison'
-]);
+Route::prefix('comparison')->middleware('auth:user')->group(function(){
+  Route::post('add/{course_id}','ComparisonController@add')->name('comparison.add');
+});
 
 Route::get('wishlist/add/{course}',[
   'uses'=>'CourseController@addToWishList',

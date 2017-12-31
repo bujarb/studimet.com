@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateComparsionsTable extends Migration
+class CreateComparisonsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateComparsionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('comparsions', function (Blueprint $table) {
+        Schema::create('comparisons', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('course_id')->unsigned();
             $table->integer('user_id')->unsigned();
             $table->timestamps();
-
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
@@ -31,11 +30,10 @@ class CreateComparsionsTable extends Migration
      */
     public function down()
     {
-        Schema::table('comparsions', function (Blueprint $table) {
-            $table->dropForeign(['course_id']);
-            $table->dropForeign(['user_id']);
-            $table->dropIfExists('comparsions');
-
-        });
+      Schema::table('comparisons', function (Blueprint $table) {
+          $table->dropForeign(['course_id']);
+          $table->dropForeign(['user_id']);
+          $table->dropIfExists('comparsions');
+      });
     }
 }
