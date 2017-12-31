@@ -31,29 +31,11 @@ Route::prefix('admin')->middleware('admin')->group(function () {
 // The bad page error route
 Route::get('error','ErrorController@noaccess')->name('bad.page');
 
+// Comparisons routes
 Route::prefix('comparison')->middleware('auth:user')->group(function(){
   Route::post('add/{course_id}','ComparisonController@add')->name('comparison.add');
 });
 
-Route::get('wishlist/add/{course}',[
-  'uses'=>'CourseController@addToWishList',
-  'as'=>'add-to-wishlist'
-]);
-
-Route::post('wishlist/delete/{course}',[
-  'uses'=>'CourseController@removeFromWishList',
-  'as'=>'remove-from-wishlist'
-]);
-
-Route::get('wishlist',[
-  'uses'=>'CourseController@getUserWithList',
-  'as'=>'get-user-wishlist'
-]);
-
-Route::get('comparisons/',[
-  'uses'=>'CourseController@getComparissionView',
-  'as'=>'get-comparisons-view'
-]);
 
 Route::get('/',[
     'uses'=>'PagesController@getIndex',
