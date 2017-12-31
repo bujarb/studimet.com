@@ -34,13 +34,18 @@ class ComparisonController extends Controller
 
             return redirect()->back();
           }else{
-          Flashy::warning('Course exists in comparisons');
+          Flashy::success('Course exists in comparisons');
             return redirect()->back();
           }
         }
       }
+    }
 
-
-      //dd($current_user);
+    public statis function exits($course_id){
+      $current_user = Auth::user();
+      $comparison = Comparison::where('user_id',$current_user->id)->where('course_id',$course_id)->first();
+      if ($comparison) {
+        //
+      }
     }
 }
