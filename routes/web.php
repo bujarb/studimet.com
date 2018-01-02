@@ -33,7 +33,9 @@ Route::get('error','ErrorController@noaccess')->name('bad.page');
 
 // Comparisons routes
 Route::prefix('comparison')->middleware('auth:user')->group(function(){
+  Route::get('/','ComparisonController@index')->name('comparison.index');
   Route::post('add/{course_id}','ComparisonController@add')->name('comparison.add');
+  Route::post('remove/{course_id}','ComparisonController@remove')->name('comparison.remove');
 });
 
 
@@ -59,7 +61,7 @@ Route::get('course/{name}',[
   'as'=>'view-course'
 ]);
 
-Route::get('results',[
+Route::get('results}',[
     'uses'=>'SearchController@filter',
     'as'=>'search-res'
 ]);

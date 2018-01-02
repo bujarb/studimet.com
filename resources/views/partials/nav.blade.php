@@ -7,7 +7,10 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
+        @if(\App\Http\Controllers\ComparisonController::userHasComparisons())
+          <a href="{{route('comparison.index')}}" class="nav-link">Comparisons</a>
 
+        @endif
       </ul>
       <ul class="navbar-nav">
         @if (Auth::guard('user')->check())

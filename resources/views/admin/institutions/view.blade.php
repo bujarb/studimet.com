@@ -64,7 +64,7 @@
       </form>
     </div>
     <div class="col-md-1 pull-right" id="icons">
-      <a href="{{route('admin-edit-university',$institution->name)}}"><span class="glyphicon glyphicon-pencil"></span></a>
+      <a href="#"><span class="glyphicon glyphicon-pencil"></span></a>
     </div>
   </div>
 </div>

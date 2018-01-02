@@ -181,7 +181,6 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Spatie\Analytics\AnalyticsServiceProvider::class,
         ConsoleTVs\Charts\ChartsServiceProvider::class,
-        Cyrildewit\PageVisitsCounter\PageVisitsCounterServiceProvider::class,
         MercurySeries\Flashy\FlashyServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         EloquentFilter\ServiceProvider::class,

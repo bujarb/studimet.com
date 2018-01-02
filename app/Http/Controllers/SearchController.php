@@ -38,6 +38,20 @@ class SearchController extends Controller
                                         $query->where('institutions.type','=',$type);
                                       }
 
+                                      // Additonal filters
+                                        if ($request->has('price')){
+                                          switch ($request->get('price')){
+                                              case 'lowhigh':
+                                                  $query->sortByDesc('price');
+                                                  break;
+                                              case 'highlow':
+                                                  $query->sortByAsc('price');
+                                                  break;
+                                          }
+                                        }
+
+
+
                                       $courses = $query->get();
 
                                       $data = [
@@ -47,8 +61,11 @@ class SearchController extends Controller
                                       //dd($courses);
 
 
+
          return view('pages.results',$data);
      }
+
+
 
 
     public function autoCompleteDiscipline(Request $request){
