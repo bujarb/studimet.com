@@ -111,7 +111,7 @@
   </div>
   <div class="col-md-6 offset-md-2" id="rescontent">
     @foreach ($courses as $course)
-      <div class="row resultsrow">
+      <div class="row resultsrow m-t-50">
         <div class="col-md-12">
           <div class="row results-header">
             <div class="col-md-8">

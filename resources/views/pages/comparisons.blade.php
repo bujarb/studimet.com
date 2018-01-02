@@ -50,7 +50,7 @@
               <li class="list-group-item">{{$course->discname}}</li>
               <li class="list-group-item">{{$course->degree}}</li>
               <li class="list-group-item">{{\Carbon\Carbon::parse($course->deadline)->format('M d Y')}}</li>
-              <li class="list-group-item">{{$course->fee}} <i class="fa fa-eur"></i></li>
+              <li class="list-group-item">{{$course->fee}} <i class="fa fa-eur"></i> / mo</li>
             </ul>
             <div class="panel-footer">
               <a href="#" class="btn btn-primary-one m-t-10">Add to wishlist!</a>
